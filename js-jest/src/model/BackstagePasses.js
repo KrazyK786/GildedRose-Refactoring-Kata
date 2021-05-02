@@ -1,11 +1,13 @@
 const { Item } = require('./Item');
+const { updateBackstagePasses } = require('../shopHelpers');
 
 class BackstagePasses extends Item {
     constructor(sellIn, quality) {
         super(name = 'Backstage passes to a TAFKAL80ETC concert', sellIn, quality);
     }
 
-    update(item) {
+    update() {
+        return updateBackstagePasses(this);
     }
 }
 

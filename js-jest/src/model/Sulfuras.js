@@ -5,7 +5,8 @@ class Sulfuras extends Item {
         super(name = 'Sulfuras, Hand of Ragnaros', sellIn, quality);
     }
 
-    update(item) {
+    update() {
+        return this.sellIn++;
     }
 }
 

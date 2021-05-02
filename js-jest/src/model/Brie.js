@@ -6,8 +6,8 @@ class Brie extends Item {
         super(name = 'Aged Brie',sellIn, quality);
     }
 
-    update(item) {
-        return updateAged(item);
+    update() {
+        return updateAged(this);
     }
 }
 

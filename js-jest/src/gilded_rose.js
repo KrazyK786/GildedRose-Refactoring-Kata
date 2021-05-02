@@ -1,17 +1,7 @@
 const {
-  lowerQuality,
   updateMisc,
-  updateAged,
-  updateBackstagePasses
 } = require('./shopHelpers');
 
-// class Item {
-//   constructor(name, sellIn, quality){
-//     this.name = name;
-//     this.sellIn = sellIn;
-//     this.quality = quality;
-//   }
-// }
 
 class Shop {
 
@@ -22,14 +12,9 @@ class Shop {
   updateQuality() {
     this.items.forEach((item) => {
       item.sellIn--;
-      if (item.name.toLowerCase().includes('brie')){
-        return updateAged(item);
-      } else if (item.name.toLowerCase().includes('sulfuras')){
-        return item.sellIn++;
-      } else if (item.name.toLowerCase().includes('backstage')){
-        return updateBackstagePasses(item);
-      } else if (item.name.toLowerCase().includes('conjured')) {
-        return lowerQuality(item, 2);
+
+      if (typeof item.update === 'function') {
+        return item.update();
       } else {
         return updateMisc(item);
       }
@@ -40,6 +25,5 @@ class Shop {
 }
 
 module.exports = {
-  // Item,
   Shop
 }
