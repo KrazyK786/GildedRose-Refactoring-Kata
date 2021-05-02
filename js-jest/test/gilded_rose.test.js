@@ -1,12 +1,15 @@
-const {Shop, Item} = require("../src/gilded_rose");
+const {Shop} = require("../src/gilded_rose");
+const { Item } = require('../src/model/Item');
+const { Brie } = require('../src/model/Brie');
+const { Conjured } = require('../src/model/Conjured');
+const { Sulfuras } = require('../src/model/Sulfuras');
+const { BackstagePasses } = require('../src/model/BackstagePasses');
 
 describe("Gilded Rose", () => {
   describe('All items', () => {
     const gildedRose = new Shop([new Item("foo", 5, 6)]);
 
     it("should have a name", function () {
-      // const gildedRose = new Shop([new Item("foo", 0, 0)]);
-      // const items = gildedRose.updateQuality();
       expect(gildedRose.items[0].name).toBe("foo");
     });
 
@@ -50,7 +53,7 @@ describe("Gilded Rose", () => {
 
       describe('for Sulfuras', () => {
         it("should not decrease the quality value", () => {
-          const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 10, 15)]);
+          const gildedRose = new Shop([new Sulfuras(10, 15)]);
           const items = gildedRose.updateQuality();
           expect(items[0].quality).toBe(15);
         });
@@ -59,13 +62,13 @@ describe("Gilded Rose", () => {
       describe('for Aged Brie', () => {
         describe('At the end of each day', () => {
           it('should increase quality value by 1', () => {
-            const gildedRose = new Shop([new Item("Aged Brie", 10, 20)]);
+            const gildedRose = new Shop([new Brie(10, 20)]);
             const items = gildedRose.updateQuality();
             expect(items[0].quality).toBe(21);
           })
 
           it('should not increase quality value past 50', () => {
-            const gildedRose = new Shop([new Item("Aged Brie", 10, 50)]);
+            const gildedRose = new Shop([new Brie(10, 50)]);
             const items = gildedRose.updateQuality();
             expect(items[0].quality).toBe(50);
           })
@@ -76,8 +79,7 @@ describe("Gilded Rose", () => {
         describe('At the end of each day', () => {
           describe('if sellIn > 10 days', () => {
             it('should increase quality by 1', () => {
-              const gildedRose = new Shop([new Item(
-                  'Backstage passes to a TAFKAL80ETC concert',
+              const gildedRose = new Shop([new BackstagePasses(
                   12,
                   10
               )]);
@@ -88,8 +90,7 @@ describe("Gilded Rose", () => {
 
           describe('if 5 < sellIn <= 10 days', () => {
             it('should increase quality by 2', () => {
-              const gildedRose = new Shop([new Item(
-                  'Backstage passes to a TAFKAL80ETC concert',
+              const gildedRose = new Shop([new BackstagePasses(
                   7,
                   10
               )]);
@@ -100,8 +101,7 @@ describe("Gilded Rose", () => {
 
           describe('if sellIn <= 5 days', () => {
             it('should increase quality by 3', () => {
-              const gildedRose = new Shop([new Item(
-                  'Backstage passes to a TAFKAL80ETC concert',
+              const gildedRose = new Shop([new BackstagePasses(
                   5,
                   10
               )]);
@@ -112,8 +112,7 @@ describe("Gilded Rose", () => {
 
           describe('if sellIn < 0 days', () => {
             it('should set quality to 0', () => {
-              const gildedRose = new Shop([new Item(
-                  'Backstage passes to a TAFKAL80ETC concert',
+              const gildedRose = new Shop([new BackstagePasses(
                   -1,
                   10
               )]);
@@ -127,7 +126,7 @@ describe("Gilded Rose", () => {
       describe('for Conjured', () => {
         describe('At the end of each day', () => {
           it('should decrease the Quality value by a factor of 2', () => {
-            const gildedRose = new Shop([new Item('Conjured', 5, 10)]);
+            const gildedRose = new Shop([new Conjured(5, 10)]);
             const items = gildedRose.updateQuality();
             expect(items[0].quality).toBe(8);
           });
@@ -147,7 +146,7 @@ describe("Gilded Rose", () => {
   //
       describe('for Sulfuras', () => {
         it("should not decrease the sellIn value", () => {
-          const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 10, 0)]);
+          const gildedRose = new Shop([new Sulfuras(10, 0)]);
           const items = gildedRose.updateQuality();
           expect(items[0].sellIn).toBe(10);
         });

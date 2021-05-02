@@ -5,13 +5,13 @@ const {
   updateBackstagePasses
 } = require('./shopHelpers');
 
-class Item {
-  constructor(name, sellIn, quality){
-    this.name = name;
-    this.sellIn = sellIn;
-    this.quality = quality;
-  }
-}
+// class Item {
+//   constructor(name, sellIn, quality){
+//     this.name = name;
+//     this.sellIn = sellIn;
+//     this.quality = quality;
+//   }
+// }
 
 class Shop {
 
@@ -33,13 +33,13 @@ class Shop {
       } else {
         return updateMisc(item);
       }
-    })
+    });
 
     return this.items;
   }
 }
 
 module.exports = {
-  Item,
+  // Item,
   Shop
 }
