@@ -7,55 +7,69 @@ class Item {
 }
 
 class Shop {
+
   constructor(items=[]){
     this.items = items;
   }
-  updateQuality() {
-    for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (this.items[i].quality > 0) {
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-            this.items[i].quality = this.items[i].quality - 1;
-          }
-        }
+
+  raiseQuality(item, increment) {
+    if (item.quality < 50){
+      item.quality += increment;
+    }
+    return item;
+  }
+
+  lowerQuality(item, increment) {
+    item.quality -= increment;
+    return item;
+  }
+
+  updateMisc(miscItem) {
+    if (miscItem.quality > 0){
+      if (miscItem.sellIn < 0){
+        miscItem.quality--;
+        miscItem.quality--;
       } else {
-        if (this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1;
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
-            }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
-            }
-          }
-        }
-      }
-      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-      }
-      if (this.items[i].sellIn < 0) {
-        if (this.items[i].name != 'Aged Brie') {
-          if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].quality > 0) {
-              if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                this.items[i].quality = this.items[i].quality - 1;
-              }
-            }
-          } else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality;
-          }
-        } else {
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1;
-          }
-        }
+      miscItem.quality--;
       }
     }
+    return miscItem;
+  }
+
+  updateAged(agedItem) {
+   return this.raiseQuality(agedItem, 1);
+  }
+
+  updateBackstagePasses(backstagePassItem) {
+    const sellInValue = backstagePassItem.sellIn;
+    if (sellInValue > 10) {
+      this.raiseQuality(backstagePassItem, 1);
+    } else if ((sellInValue > 5) && (sellInValue <= 10)){
+      this.raiseQuality(backstagePassItem,2);
+    } else if ((sellInValue > 0) && (sellInValue < 5)){
+      this.raiseQuality(backstagePassItem, 3);
+    } else {
+      backstagePassItem.quality = 0;
+    }
+
+    return backstagePassItem;
+  }
+
+  updateQuality() {
+    this.items.forEach((item) => {
+      item.sellIn--;
+      if (item.name.toLowerCase().includes('brie')){
+        return this.updateAged(item);
+      } else if (item.name.toLowerCase().includes('sulfuras')){
+        return item.sellIn++;
+      } else if (item.name.toLowerCase().includes('backstage')){
+        return this.updateBackstagePasses(item);
+      } else if (item.name.toLowerCase().includes('conjured')) {
+        return this.lowerQuality(item, 2);
+      } else {
+        return this.updateMisc(item);
+      }
+    })
 
     return this.items;
   }
