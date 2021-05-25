@@ -1,6 +1,6 @@
 const {
   updateMisc,
-} = require('./shopHelpers');
+} = require('./itemHelpers');
 
 
 class Shop {

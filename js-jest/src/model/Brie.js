@@ -1,5 +1,5 @@
 const { Item } = require('./Item');
-const { updateAged } = require('../shopHelpers');
+const { updateAged } = require('../itemHelpers');
 
 class Brie extends Item {
     constructor(sellIn, quality) {

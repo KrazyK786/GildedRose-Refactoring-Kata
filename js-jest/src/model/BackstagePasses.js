@@ -1,5 +1,5 @@
 const { Item } = require('./Item');
-const { updateBackstagePasses } = require('../shopHelpers');
+const { updateBackstagePasses } = require('../itemHelpers');
 
 class BackstagePasses extends Item {
     constructor(sellIn, quality) {

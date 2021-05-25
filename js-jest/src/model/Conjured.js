@@ -1,5 +1,5 @@
 const { Item } = require('./Item');
-const { lowerQuality } = require('../shopHelpers');
+const { lowerQuality } = require('../itemHelpers');
 
 class Conjured extends Item {
     constructor(sellIn, quality) {
