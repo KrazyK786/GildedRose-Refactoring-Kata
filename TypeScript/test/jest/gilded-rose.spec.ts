@@ -49,6 +49,13 @@ describe('Gilded Rose', () => {
         const item = items[0];
         expect(item.quality).toBe(expected);
       });
+      it('should raise the quality twice if sellIn is less than 0 and quality is less than 50', () => {
+        const expected = 4;
+        const gildedRose = new GildedRose([new Item('Aged Brie', -1, 2)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.quality).toBe(expected);
+      });
       it('should not raise the quality if quality is 50 or more', () => {
         const expected = 50;
         const gildedRose = new GildedRose([new Item('Aged Brie', 2, 50)]);
