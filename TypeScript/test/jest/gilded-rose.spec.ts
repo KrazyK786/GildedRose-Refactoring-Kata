@@ -71,5 +71,17 @@ describe('Gilded Rose', () => {
         expect(item.sellIn).toBe(expected);
       });
     });
+
+    describe('for Backstage passes to a TAFKAL80ETC concert', () => {
+      describe('if sell by is 11 or more', () => {
+        it('should raise the quality if quality is less than 50', () => {
+          const expected = 31;
+          const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 21, 30)]);
+          const items = gildedRose.updateQuality();
+          const item = items[0];
+          expect(item.quality).toBe(expected);
+        });
+      });
+    });
   });
 });
