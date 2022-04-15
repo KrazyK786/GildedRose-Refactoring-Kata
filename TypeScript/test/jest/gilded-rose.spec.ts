@@ -23,6 +23,20 @@ describe('Gilded Rose', () => {
         expect(item.quality).toBe(expected);
       });
     });
+    
+    [
+      'pineapple',
+      'Backstage passes to a TAFKAL80ETC concert',
+      'Sulfuras, Hand of Ragnaros'
+    ].forEach(itemType => {
+      it(`should not lower ${itemType} quality if quality is 0`, () => {
+        const expected = 0;
+        const gildedRose = new GildedRose([new Item(itemType, 0, 0)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.quality).toBe(expected);
+      });
+    });
 
     describe('for regular items', () => {
       it('should not lower the item quality if quality is less than 1', () => {
