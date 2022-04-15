@@ -25,6 +25,13 @@ describe('Gilded Rose', () => {
         const item = items[0];
         expect(item.quality).toBe(expected);
       });
+      it('should lower the item quality by 2 if quality is greter than 0 and sellin is 0 or below', () => {
+        const expected = 0;
+        const gildedRose = new GildedRose([new Item('foo', 0, 2)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.quality).toBe(expected);
+      });
     });
   });
 });
