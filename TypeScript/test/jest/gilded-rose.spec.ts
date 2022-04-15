@@ -136,5 +136,18 @@ describe('Gilded Rose', () => {
         expect(item.quality).toBe(expected);
       });
     });
+
+    describe('Sulfuras, Hand of Ragnaros', () => {
+      it('should raise the quality', () => {
+        const expected = 12;
+        const itemName = 'Backstage passes to a TAFKAL80ETC concert';
+        const sellin = 34;
+        const quality = 11;
+        const gildedRose = new GildedRose([new Item(itemName, sellin, quality)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.quality).toBe(expected);
+      });
+    });
   });
 });
