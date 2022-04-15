@@ -56,6 +56,13 @@ describe('Gilded Rose', () => {
         const item = items[0];
         expect(item.quality).toBe(expected);
       });
+      it('should lower the sellIn value', () => {
+        const expected = 1;
+        const gildedRose = new GildedRose([new Item('Aged Brie', 2, 50)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.sellIn).toBe(expected);
+      });
     });
   });
 });
