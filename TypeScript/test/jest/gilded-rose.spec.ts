@@ -32,6 +32,13 @@ describe('Gilded Rose', () => {
         const item = items[0];
         expect(item.quality).toBe(expected);
       });
+      it('should lower the item sellIn if greter than 0', () => {
+        const expected = 1;
+        const gildedRose = new GildedRose([new Item('foo', 2, 2)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.sellIn).toBe(expected);
+      });
     });
   });
 });
