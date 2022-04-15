@@ -10,6 +10,20 @@ describe('Gilded Rose', () => {
       expect(item.name).toBe(expected);
     });
 
+    [
+      'Aged Brie',
+      'Backstage passes to a TAFKAL80ETC concert',
+      'Sulfuras, Hand of Ragnaros'
+    ].forEach(itemType => {
+      it(`should not raise special item ${itemType} quality if quality is 50`, () => {
+        const expected = 50;
+        const gildedRose = new GildedRose([new Item(itemType, 20, 50)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.quality).toBe(expected);
+      });
+    });
+
     describe('for regular items', () => {
       it('should not lower the item quality if quality is less than 1', () => {
         const expected = 0;
@@ -73,14 +87,12 @@ describe('Gilded Rose', () => {
     });
 
     describe('for Backstage passes to a TAFKAL80ETC concert', () => {
-      describe('if sell by is 11 or more', () => {
-        it('should raise the quality if quality is less than 50', () => {
-          const expected = 31;
-          const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 21, 30)]);
-          const items = gildedRose.updateQuality();
-          const item = items[0];
-          expect(item.quality).toBe(expected);
-        });
+      it('should raise the quality if sell by is 11 or more', () => {
+        const expected = 31;
+        const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 21, 30)]);
+        const items = gildedRose.updateQuality();
+        const item = items[0];
+        expect(item.quality).toBe(expected);
       });
     });
   });
