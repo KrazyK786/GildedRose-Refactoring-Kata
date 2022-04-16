@@ -1,5 +1,6 @@
 const lowerQuality = (item: Item): Item => ({ ...item, quality: item.quality - 1 });
 const raiseQuality = (item: Item): Item => ({ ...item, quality: item.quality + 1 });
+const lowerSellIn = (item: Item): Item => ({ ...item, sellIn: item.sellIn - 1 });
 
 export class Item {
   name: string;
@@ -46,7 +47,7 @@ export class GildedRose {
         }
       }
       if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-        this.items[i].sellIn = this.items[i].sellIn - 1;
+        this.items[i] = lowerSellIn(this.items[i]);
       }
       if (this.items[i].sellIn < 0) {
         if (this.items[i].name != 'Aged Brie') {
