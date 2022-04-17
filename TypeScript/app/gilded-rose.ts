@@ -2,6 +2,9 @@ const lowerQuality = (item: Item): Item => ({ ...item, quality: item.quality - 1
 const raiseQuality = (item: Item): Item => ({ ...item, quality: item.quality + 1 });
 const lowerSellIn = (item: Item): Item => ({ ...item, sellIn: item.sellIn - 1 });
 const qualityCanBeRaised = (item: Item): boolean => item.quality < 50;
+const isAgedBrie = (name: string): boolean => name === 'Aged Brie';
+const isBackstagePasses = (name: string): boolean => name === 'Backstage passes to a TAFKAL80ETC concert';
+const isSulfuras = (name: string): boolean => name === 'Sulfuras, Hand of Ragnaros';
 
 export class Item {
   name: string;
@@ -24,16 +27,16 @@ export class GildedRose {
 
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+      if (!isAgedBrie(this.items[i].name) && !isBackstagePasses(this.items[i].name)) {
         if (this.items[i].quality > 0) {
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+          if (!isSulfuras(this.items[i].name)) {
             this.items[i] = lowerQuality(this.items[i]);
           }
         }
       } else {
         if (qualityCanBeRaised(this.items[i])) {
           this.items[i] = raiseQuality(this.items[i]);
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
+          if (isBackstagePasses(this.items[i].name)) {
             if (this.items[i].sellIn < 11) {
               if (qualityCanBeRaised(this.items[i])) {
                 this.items[i] = raiseQuality(this.items[i]);
@@ -47,14 +50,14 @@ export class GildedRose {
           }
         }
       }
-      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+      if (!isSulfuras(this.items[i].name)) {
         this.items[i] = lowerSellIn(this.items[i]);
       }
       if (this.items[i].sellIn < 0) {
-        if (this.items[i].name != 'Aged Brie') {
-          if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
+        if (!isAgedBrie(this.items[i].name)) {
+          if (!isBackstagePasses(this.items[i].name)) {
             if (this.items[i].quality > 0) {
-              if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+              if (!isSulfuras(this.items[i].name)) {
                 this.items[i] = lowerQuality(this.items[i]);
               }
             }
