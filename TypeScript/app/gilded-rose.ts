@@ -1,6 +1,7 @@
 const lowerQuality = (item: Item): Item => ({ ...item, quality: item.quality - 1 });
 const raiseQuality = (item: Item): Item => ({ ...item, quality: item.quality + 1 });
 const lowerSellIn = (item: Item): Item => ({ ...item, sellIn: item.sellIn - 1 });
+const qualityCanBeRaised = (item: Item): boolean => item.quality < 50;
 
 export class Item {
   name: string;
@@ -30,16 +31,16 @@ export class GildedRose {
           }
         }
       } else {
-        if (this.items[i].quality < 50) {
+        if (qualityCanBeRaised(this.items[i])) {
           this.items[i] = raiseQuality(this.items[i]);
           if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
             if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
+              if (qualityCanBeRaised(this.items[i])) {
                 this.items[i] = raiseQuality(this.items[i]);
               }
             }
             if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
+              if (qualityCanBeRaised(this.items[i])) {
                 this.items[i] = raiseQuality(this.items[i]);
               }
             }
@@ -61,7 +62,7 @@ export class GildedRose {
             this.items[i].quality = this.items[i].quality - this.items[i].quality;
           }
         } else {
-          if (this.items[i].quality < 50) {
+          if (qualityCanBeRaised(this.items[i])) {
             this.items[i] = raiseQuality(this.items[i]);
           }
         }
