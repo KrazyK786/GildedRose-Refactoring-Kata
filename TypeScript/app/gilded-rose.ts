@@ -9,6 +9,13 @@ const isAgedBrie = (item: Item): boolean => item.name === 'Aged Brie';
 const isBackstagePasses = (item: Item): boolean => item.name === 'Backstage passes to a TAFKAL80ETC concert';
 const isSulfuras = (item: Item): boolean => item.name === 'Sulfuras, Hand of Ragnaros';
 
+const isExpired = (item: Item): boolean => item.sellIn < 0;
+const updateAgedBrieAfterSellIn = (item: Item) => isExpired(item) ? raiseQuality(item) : { ...item };
+const updateAgedBrie = (item: Item) => pipe(raiseQuality, lowerSellIn, updateAgedBrieAfterSellIn)(item);
+
+const updateBackstagePasses = (item: Item) => pipe(raiseQuality, lowerSellIn, updateAgedBrieAfterSellIn)(item);
+
+
 export class Item {
   name: string;
   sellIn: number;
@@ -30,6 +37,10 @@ export class GildedRose {
 
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
+      if (isAgedBrie(this.items[i])) {
+        this.items[i] = updateAgedBrie(this.items[i]);
+      }
+
       if (!isAgedBrie(this.items[i]) && !isBackstagePasses(this.items[i])) {
         this.items[i] = lowerQuality(this.items[i]);
       } 
@@ -55,9 +66,6 @@ export class GildedRose {
             this.items[i].quality = this.items[i].quality - this.items[i].quality;
           }
         } 
-        else {
-          this.items[i] = raiseQuality(this.items[i]);
-        }
       }
     }
 
