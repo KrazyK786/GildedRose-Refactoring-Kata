@@ -13,7 +13,17 @@ const isExpired = (item: Item): boolean => item.sellIn < 0;
 const updateAgedBrieAfterSellIn = (item: Item) => isExpired(item) ? raiseQuality(item) : { ...item };
 const updateAgedBrie = (item: Item) => pipe(raiseQuality, lowerSellIn, updateAgedBrieAfterSellIn)(item);
 
-const updateBackstagePasses = (item: Item) => pipe(raiseQuality, lowerSellIn, updateAgedBrieAfterSellIn)(item);
+const raiseQualityForBackstagePasses = (item: Item) => {
+  let copyItem = { ...item };
+  if (item.sellIn < 11 ) copyItem = raiseQuality(copyItem);
+  if (item.sellIn < 6 ) copyItem = raiseQuality(copyItem);
+  return copyItem;
+};
+const updateBackstagePassesAfterSellIn = (item: Item) => isExpired(item) ? { ...item, quality: item.quality - item.quality } : { ...item };
+const updateBackstagePasses = (item: Item) => pipe(raiseQuality, raiseQualityForBackstagePasses, lowerSellIn, updateBackstagePassesAfterSellIn)(item);
+
+const updateRegularItemAfterSellIn = (item: Item) => isExpired(item) ? lowerQuality(item) : { ...item };
+const updateRegularItem = (item: Item) => pipe(lowerQuality, lowerSellIn, updateRegularItemAfterSellIn)(item);
 
 
 export class Item {
@@ -41,32 +51,14 @@ export class GildedRose {
         this.items[i] = updateAgedBrie(this.items[i]);
       }
 
-      if (!isAgedBrie(this.items[i]) && !isBackstagePasses(this.items[i])) {
-        this.items[i] = lowerQuality(this.items[i]);
+      if (isBackstagePasses(this.items[i])){
+        this.items[i] = updateBackstagePasses(this.items[i]);
+      }
+
+      
+      if (!isBackstagePasses(this.items[i]) && !isAgedBrie(this.items[i])) {
+        this.items[i] = updateRegularItem(this.items[i]);
       } 
-      else {
-        this.items[i] = raiseQuality(this.items[i]);
-        if (isBackstagePasses(this.items[i])) {
-          if (this.items[i].sellIn < 11) {
-            this.items[i] = raiseQuality(this.items[i]);
-          }
-          if (this.items[i].sellIn < 6) {
-            this.items[i] = raiseQuality(this.items[i]);
-          }
-        }
-      }
-
-      this.items[i] = lowerSellIn(this.items[i]);
-
-      if (this.items[i].sellIn < 0) {
-        if (!isAgedBrie(this.items[i])) {
-          if (!isBackstagePasses(this.items[i])) {
-            this.items[i] = lowerQuality(this.items[i]);
-          } else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality;
-          }
-        } 
-      }
     }
 
     return this.items;
