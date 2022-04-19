@@ -1,4 +1,4 @@
-const pipe = (...functions) => x => functions.reduce((acc, fn) => fn(acc), x);
+const pipe = (...functions: { (item: Item): Item }[]) => (itm: Item) => functions.reduce((acc, fn) => fn(acc), itm);
 
 const lowerQuality = (item: Item): Item => !isSulfuras(item) && qualityCanBeLowered(item) ? ({ ...item, quality: item.quality - 1 }) : { ...item };
 const raiseQuality = (item: Item): Item => qualityCanBeRaised(item) ? ({ ...item, quality: item.quality + 1 }) : { ...item };
